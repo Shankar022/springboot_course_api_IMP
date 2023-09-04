@@ -1,20 +1,32 @@
 package com.shankar.com.courseapi.topic;
- 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 public class TopicController {
 
+    private final TopicService topicService;
+
+    @Autowired
+    public TopicController(TopicService topicService) {
+        this.topicService = topicService;
+    }
+
     @RequestMapping("/topics")
     public List<Topic> getAllTopics() {
-        return Arrays.asList(
-                new Topic("Java", "Java Programming", "Java Programming description"),
-                new Topic("Spring", "Spring Boot", "Spring Boot description"),
-                new Topic("Javascript", "Javascript Programming", "Javascript Programming description")
-                );
+        return topicService.getAllTopics();
+    }
+
+    @RequestMapping("/topics/{id}")
+    public Topic getTopicById(@PathVariable String id){
+        return topicService.getTopicById(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/topics")
+    public void addTopic(@RequestBody Topic topic){
+        topicService.addTopic(topic);
     }
 }
