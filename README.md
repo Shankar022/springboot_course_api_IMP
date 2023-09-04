@@ -1,0 +1,5 @@
+| Topic                                                           | Links                                                                                                                                                             |
+|-----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `@SpringBootApplication` Annotation                             | https://docs.spring.io/spring-boot/docs/2.0.x/reference/html/using-boot-using-springbootapplication-annotation.html                                               |
+| `SpringApplication.run(CourseApiApp.class, args)` static method | https://www.learnerslesson.com/SpringBoot/Spring-Boot-run()-Method.htm#:~:text=Now%2C%20if%20you%20notice%2C%20there,one%20is%20the%20class%20MyFirstApplication. |
+| `@Controller` and `@RestController` Annotation                  | https://stackabuse.com/controller-and-restcontroller-annotations-in-spring-boot/                                                                                  |
