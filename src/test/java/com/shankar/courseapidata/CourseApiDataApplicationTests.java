@@ -1,13 +1,13 @@
-package com.shankar.com.courseapi;
+package com.shankar.courseapidata;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CourseApiApplicationTests {
+class CourseApiDataApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+	@Test
+	void contextLoads() {
+	}
 
 }
