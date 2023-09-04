@@ -1,20 +1,18 @@
 package com.shankar.com.courseapi.topic;
 
-import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public interface TopicService {
 
-    public List<Topic> getAllTopics();
+    List<Topic> getAllTopics();
 
-    public Topic getTopicById(String id);
+    ResponseEntity<Topic> getTopicById(String id);
 
-    public void addTopic(Topic topic);
+    ResponseEntity<String> addTopic(Topic topic);
 
-    public void updateTopic(String id, Topic topic);
+    ResponseEntity<String> updateTopic(String id, Topic topic);
 
-    public void deleteTopic(String id);
+    ResponseEntity<String> deleteTopic(String id);
 }

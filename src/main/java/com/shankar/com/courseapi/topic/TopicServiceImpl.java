@@ -1,8 +1,9 @@
 package com.shankar.com.courseapi.topic;
 
-import com.shankar.com.courseapi.Exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,43 +26,42 @@ public class TopicServiceImpl implements TopicService {
 
         // Convert the iterable to a List
         topicIterable.forEach(topics::add);
-
         return topics;
     }
 
     @Override
-    public Topic getTopicById(String id) {
+    public ResponseEntity<Topic> getTopicById(String id) {
         Optional<Topic> optionalTopic = topicRepository.findById(id);
 
         // Check if the topic exists, and return it if found, or handle the case where it's not found
         if (optionalTopic.isPresent()) {
-            return optionalTopic.get();
+            return ResponseEntity.ok(optionalTopic.get());
         } else {
             // Handle the case where the topic with the given ID does not exist
-            throw new NotFoundException("Topic with ID " + id + " not found");
+            return ResponseEntity.notFound().build();
         }
     }
 
-    @Override
-    public void addTopic(Topic topic) {
+    public ResponseEntity<String> addTopic(Topic topic) {
         // You can add validation logic here if needed
         if (topic == null) {
-            throw new IllegalArgumentException("Topic cannot be null");
+            return ResponseEntity.badRequest().body("Topic cannot be null");
         }
 
         try {
             topicRepository.save(topic);
+            return ResponseEntity.ok("Topic added successfully, ID : " + topic.getId());
         } catch (DataIntegrityViolationException e) {
             // Handle any database integrity violation exceptions (e.g., duplicate key, constraints)
-            throw new IllegalArgumentException("Unable to add topic due to data integrity violation.", e);
+            return ResponseEntity.badRequest().body("Unable to add topic due to data integrity violation.");
         } catch (Exception e) {
             // Handle other exceptions that may occur during the save operation
-            throw new RuntimeException("An error occurred while adding the topic.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while adding the topic.");
         }
     }
 
     @Override
-    public void updateTopic(String id, Topic updatedTopic) {
+    public ResponseEntity<String> updateTopic(String id, Topic updatedTopic) {
         // Find the existing topic by ID
         Optional<Topic> optionalExistingTopic = topicRepository.findById(id);
 
@@ -74,23 +74,29 @@ public class TopicServiceImpl implements TopicService {
 
             // Save the updated topic back to the database
             topicRepository.save(existingTopic);
+
+            return ResponseEntity.ok("Topic ID: " + id + " updated successfully");
         } else {
-            // Handle the case where the topic with the given ID does not exist
-            throw new NotFoundException("Topic with ID " + id + " not found");
+            // Return a response indicating that the topic with the given ID was not found
+            return ResponseEntity.notFound().build();
         }
     }
 
+
     @Override
-    public void deleteTopic(String id) {
+    public ResponseEntity<String> deleteTopic(String id) {
         // Check if the topic with the given ID exists
         Optional<Topic> optionalTopic = topicRepository.findById(id);
 
         if (optionalTopic.isPresent()) {
             // Delete the topic from the database
             topicRepository.delete(optionalTopic.get());
+
+            return ResponseEntity.ok("Topic ID : " + id + " deleted successfully");
         } else {
-            // Handle the case where the topic with the given ID does not exist
-            throw new NotFoundException("Topic with ID " + id + " not found");
+            // Return a response indicating that the topic with the given ID was not found
+            return ResponseEntity.notFound().build();
         }
     }
+
 }
